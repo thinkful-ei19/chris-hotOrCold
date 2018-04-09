@@ -1,8 +1,8 @@
 import React from 'react';
 
-function Feedback () {
+function Feedback (props) {
     return (
-        <p className="App__feedback">You guessed correctly!</p>
+        <p className="App__feedback">{props.status}</p>
     )
 }
 

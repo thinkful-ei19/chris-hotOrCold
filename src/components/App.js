@@ -12,47 +12,47 @@ class App extends Component {
   constructor(props) {
     super(props)
 
-    let randomNumber = Math.round((Math.random())*100)
-    console.log(randomNumber);
     this.state = { 
-      answer: randomNumber,
-      guesses: []
+      answer: Math.round((Math.random())*100),
+      guesses: [],
+      status: 'Pick a number from 1 to 100'
     }
 
   }
 
   guessIt(number) {
-    console.log(this.state.answer);
+    this.state.guesses.push(number);
     const correctNumber = this.state.answer;
     let marginError = number - correctNumber;
     //Make positive to compare
     if (marginError < 0) {
       marginError = (marginError * -1);
     }
-    console.log(marginError);
-    // if (parseInt(number) == parseInt(this.state.answer)) {
-    //   alert('You guessed correctly!')
-    // } else {
-    //   this.state.guesses.push(number);
-    //   alert('Try again!')
-    // }
-    
     //If within 10 numbers
     if (marginError <= 10 && marginError !== 0) {
-      alert('Hot')
+      this.setState({
+        status: 'Hot'
+      })
     }
     //If within 20 numbers
     else if (marginError <= 20 && marginError >= 11) {
-      alert('Warm')
+      this.setState({
+        status: 'Warm'
+      })
     }
     //Else if it matches
     else if (marginError === 0) {
-      alert('Correct!')
+      this.setState({
+        status: 'You guessed it!'
+      })
     }
     //Else...
     else {
-      alert('Cold')
+      this.setState({
+        status: 'Cold'
+      })
     }
+    console.log(this.state)
   }
   
   render() {
@@ -60,17 +60,25 @@ class App extends Component {
       this.guessIt(number);
     }
 
+    const newGame = () => {
+      this.setState({
+        answer: Math.round((Math.random())*100),
+        guesses: [],
+        status: 'Pick a number from 1 to 100'
+      })
+    }
+
     return (
       <div className="App">
         <nav className="nav">
-          <NavList />
+          <NavList newGame={newGame}/>
         </nav>
         <div className="App__main container">
           <h1>Hot or Cold</h1>
-          <Feedback />
-          <AppForm handleNumberSubmit={guessNumber} />
-          <GuessNumber />
-          <NumberList />
+          <Feedback status={this.state.status}/>
+          <AppForm handleNumberSubmit={guessNumber}/>
+          <GuessNumber guesses={this.state.guesses}/>
+          <NumberList guesses={this.state.guesses}/>
         </div>
       </div>
     );
