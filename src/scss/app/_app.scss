@@ -1,0 +1,12 @@
+.App {
+    text-align: center;
+
+    &__guessNumber__list {
+        list-style: none;
+        &__number {
+            display: inline-block;
+            margin: 0 1rem 0 0;
+        }
+    }
+
+  }
